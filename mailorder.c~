@@ -1,0 +1,168 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+double getDiscountInfo(int month, double Tprice);
+string getcounty(char county);
+double SalesTax(char county, double discount1, double Tprice);
+void  getItemsInfo(double& price, double& weight);
+void getCustomerInfo(int& accountN, int& day, int& month, int& year, char& county);   
+double calcshipping(double Tweight);
+void outputInvoice(int accountN, int day, int month, int year, char county, double Tweight, double shipping, double Tprice, double discount1, double salestax, double totaldue, string countyN);
+
+int main()
+{
+  double Tprice;
+  double Tweight;
+  int accountN;
+  int day;
+  int month;
+  int year;
+  char county;
+  double discount1; 
+  double shipping;
+  double salestax;
+  double totaldue;
+  string countyN;
+  
+  getCustomerInfo(accountN, day, month, year, county);
+  getItemsInfo(Tprice, Tweight);
+  discount1 = getDiscountInfo(month, Tprice);
+  shipping = calcshipping(Tweight);
+  countyN = getcounty(county);
+  salestax = SalesTax(county, discount1, Tprice);
+  outputInvoice(accountN, day, month, year, county, Tweight, shipping, Tprice, discount1, salestax, totaldue, countyN);
+  return 0;
+}
+
+
+void getCustomerInfo(int& accountN, int& day, int& month, int& year, char& county)
+{
+  cout << "Enter your account number: ";
+  cin >> accountN;
+  cout << "Enter the day: ";
+  cin >> day;
+  cout << "Enter the month: ";
+  cin >> month;
+  cout << "Enter the year: ";
+  cin >> year;
+  cout << "Enter county code S for San Diego County, O for Orange County, L for LA County: ";
+  cin >> county;
+}
+
+
+
+void getItemsInfo(double& Tprice, double& Tweight)
+{
+  double weight;
+  double price;
+  char choice;    
+  cout << "\n  Do you want to oder an item? Enter Y or N: ";
+  cin >> choice;
+  while(choice == 'Y')
+    {
+      cout << "Enter a price: ";
+      cin >> price;
+      cout << "Enter A weight: ";
+      cin >> weight;   
+      cout << "\n  Do you want to oder an item? Enter Y or N: ";
+      cin >> choice;
+      
+      Tprice += price;
+      Tweight += weight;
+    }    
+}
+
+double getDiscountInfo(int month, double Tprice)
+{
+  double discount1;
+ 
+  if((month <= 5) && (month >= 0))
+    {
+      discount1 = Tprice*.05;
+    }
+  else if((month <= 8) && (month >= 6))
+    {
+      discount1 = Tprice*.10;
+    }
+  else
+    {
+      discount1 = Tprice*.15;
+      
+    }
+  return discount1;
+}
+string getcounty(char county)
+{
+  string countyN;  
+
+  if(county == 'S')
+    {
+      countyN = "San Diego";
+    }
+  else if(county == 'O')
+    {
+      countyN = "Orange County";
+    }
+  else
+    {
+      countyN = "Los Angeles";
+    }
+  return countyN;
+
+}
+double SalesTax(char county, double discount1, double Tprice)
+{
+
+  double salestax;
+
+  if(county == 'S')
+    {
+      salestax = (Tprice - discount1)*.0775;
+    }
+  else if(county == 'O')
+    {
+      salestax = (Tprice - discount1)*.0775;
+    }
+  else
+    {
+      salestax = (Tprice - discount1)*.0825;
+      
+    }
+
+  return  salestax;
+  
+}
+
+double calcshipping(double Tweight)
+{
+  double shipping;  
+  if (Tweight < 25)
+    {  
+      shipping = 5.00;
+    }
+  else if ((Tweight <= 50) && (Tweight >= 26))
+    {  
+      shipping =  (Tweight - 25)*.10 + 5.00;
+     
+    }
+  else if (Tweight > 50)
+    {  
+      shipping = 7.50 + ((Tweight - 50)*.07); 
+    } 
+  return shipping;
+}
+void outputInvoice(int accountN, int day, int month, int year, char county, double Tweight, double shipping, double Tprice, double discount1, double salestax, double totaldue, string countyN)
+{
+  cout << fixed << setprecision(2) << endl;
+  cout << "Account Number" << right << setw(10) << "County" << endl;
+  cout << accountN << right << setw(25) << countyN << endl;
+  cout << "DATE OF SALE: " << day << "/" << month << "/" << year << endl;
+  cout << "TOTAL SALE AMOUNT: " << right <<setw(11) << "$" << setw(10) << Tprice << endl;
+  cout << "DISCOUNT: " << right << setw(20) << "$" << setw(10) << discount1 << endl;
+  cout << "SALES TAX: " << right <<setw(19) << "$" << setw(10) << salestax << endl;
+  cout << "SHIPPING: " << right << setw(20) << "$" << setw(10) << shipping << endl;
+  totaldue = (Tprice - discount1 + salestax + shipping); 
+  cout << "TOTAL DUE: " << setw(19) << "$" << setw(10) << totaldue << endl;
+}

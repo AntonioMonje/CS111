@@ -1,0 +1,3 @@
+The number of numbers in the file is: 200
+The sum of the numbers is: 105527
+The average for all the numbers is: 527.635

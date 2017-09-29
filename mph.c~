@@ -1,0 +1,19 @@
+//This program converts mph to m/s.
+#include <iostream>
+using namespace std;
+
+int main()
+{
+  const double METERS = 1609;
+  const double SECONDS = 3600;
+  int  number;
+  int ms;
+
+   cout << "Enter the number of miles per hour." << endl;
+   cin >> number;
+   ms = (int)number * METERS * (1/ SECONDS);
+   cout << "The number of meters per second is " << ms << "." << endl;  
+   return 0;
+}
+
+  
